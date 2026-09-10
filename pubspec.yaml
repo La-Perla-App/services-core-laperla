@@ -1,0 +1,17 @@
+name: laperla_services_core
+description: >
+  Core Dart/Flutter para consumir los servicios La Perla (ConnectRPC,
+  GeneralParams, sesión). Espejo cliente de backend-core-laperla.
+version: 0.1.0
+repository: https://github.com/La-Perla-App/services-core-laperla
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  connectrpc: ^1.0.0
+
+dev_dependencies:
+  lints: ^5.1.1
+  test: ^1.25.8
