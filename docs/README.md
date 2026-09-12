@@ -11,5 +11,6 @@ No genera stubs. No implementa pantallas. Da:
 
 - Humanos: esta carpeta
 - Cómo llamar servicios: [consume-services.md](consume-services.md)
+- Orden de wiring app: [app-wiring.md](app-wiring.md)
 - Contrato de params: [general-params.md](general-params.md)
 - Agentes: [../AGENTS.md](../AGENTS.md)

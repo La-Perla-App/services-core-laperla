@@ -23,4 +23,4 @@ No genera protos. No metas widgets, Riverpod, ni stubs de auth en este repo. Los
 
 ## Docs
 
-[docs/consume-services.md](docs/consume-services.md), [docs/general-params.md](docs/general-params.md).
+[docs/consume-services.md](docs/consume-services.md), [docs/app-wiring.md](docs/app-wiring.md), [docs/general-params.md](docs/general-params.md).

@@ -1,21 +1,23 @@
 # Cómo consumir servicios La Perla desde Flutter
 
-## 1. Generar clientes Dart en el repo del **servicio** (o un repo `protos`)
+## 1. Generar clientes Dart en el repo del **servicio**
 
-En el servicio (ej. `auth-backend-laperla`), añade plugins Dart a `buf.gen.yaml` (o un `buf.gen.dart.yaml` aparte):
+Cada servicio B2C trae `buf.gen.dart.yaml`:
+
+```bash
+cd auth-backend-laperla   # ver lista completa en app-wiring.md
+buf generate --template buf.gen.dart.yaml
+# → gen/dart/services/.../*.connect.client.dart
+```
+
+Repos B2C actuales y orden de pantallas: [app-wiring.md](app-wiring.md).
 
 ```yaml
 plugins:
   - remote: buf.build/protocolbuffers/dart
     out: gen/dart
-    opt:
-      - grpc=false
   - remote: buf.build/connectrpc/dart
     out: gen/dart
-```
-
-```bash
-buf generate --template buf.gen.dart.yaml
 ```
 
 Eso produce algo como `auth_service.connect.client.dart` con:
