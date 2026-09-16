@@ -1,35 +1,36 @@
 # Cómo consumir servicios La Perla desde Flutter
 
-## 1. Generar clientes Dart en el repo del **servicio**
+## 1. Los clientes Dart se generan en la **app**
 
-Cada servicio B2C trae `buf.gen.dart.yaml`:
+`app-laperla` los genera desde los `.proto` de cada servicio, leyéndolos de git,
+y los commitea en su propio `lib/gen/`:
 
 ```bash
-cd auth-backend-laperla   # ver lista completa en app-wiring.md
-buf generate --template buf.gen.dart.yaml
-# → gen/dart/services/.../*.connect.client.dart
+cd app-laperla
+./tool/proto.sh          # → lib/gen/services/.../*.connect.client.dart
+./tool/proto_check.sh    # falla si lo commiteado no coincide con los .proto
 ```
 
-Repos B2C actuales y orden de pantallas: [app-wiring.md](app-wiring.md).
+Todo el contrato vive en `app-laperla/buf.gen.dart.yaml` y `tool/proto.sh`:
+qué repos, qué se excluye y con qué versiones. Lo que hay que saber al tocarlo:
 
-```yaml
-plugins:
-  - remote: buf.build/protocolbuffers/dart
-    out: gen/dart
-  - remote: buf.build/connectrpc/dart
-    out: gen/dart
-```
+- **Sólo superficies públicas.** Los `service_internal.proto` son RPC de staff
+  que sólo se alcanzan dentro del clúster; ni se generan.
+- **Plugins locales con versión fija.** Ocho inputs contra los plugins remotos
+  del BSR agotan el límite y la generación queda a medias. La versión del
+  plugin tiene que seguir a la del runtime: este paquete pide
+  `connectrpc ^1.0.0` (protobuf `>=3.1.0 <5.0.0`), así que `protoc_plugin`
+  va en 22.5.0 — con 25.x el código generado no compila.
+- **`--include-imports --include-wkt`.** En Dart los tipos bien conocidos
+  (`Timestamp`, `Struct`, `HttpBody`) no vienen con ninguna dependencia.
 
-Eso produce algo como `auth_service.connect.client.dart` con:
-
-```dart
-class AuthServiceClient {
-  AuthServiceClient(this._transport);
-  Future<LoginResponse> credentialsLogin(CredentialsLoginRequest input, {Headers? headers});
-}
-```
+Los repos de servicio ya **no** traen `buf.gen.dart.yaml` ni `gen/dart/`: eran
+stubs que nadie compilaba y que se quedaron con una API de protobuf
+incompatible.
 
 **No copies DTOs a mano.** El contrato es el `.proto`.
+
+Repos B2C y orden de pantallas: [app-wiring.md](app-wiring.md).
 
 ## 2. Dependencias en la app Flutter
 
@@ -43,7 +44,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
 ```
 
-Los stubs generados: path / git al repo del servicio, o publica un paquete `laperla_auth` que solo reexporte `gen/dart`.
+Los stubs no son una dependencia: viven en `lib/gen/` de la propia app.
 
 ## 3. Un Transport para todos los clientes
 

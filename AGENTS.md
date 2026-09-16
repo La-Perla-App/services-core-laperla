@@ -11,7 +11,12 @@ Paquete Dart `laperla_services_core`. Core cliente para **llamar servicios** (es
 
 ## Qué no es
 
-No genera protos. No metas widgets, Riverpod, ni stubs de auth en este repo. Los clientes Dart se generan **en el repo del servicio**.
+No genera protos. No metas widgets, Riverpod, ni stubs de auth en este repo. Los clientes Dart los genera la **app** (`app-laperla/tool/proto.sh`) desde los `.proto` de cada servicio.
+
+La versión del plugin de generación va atada a la de este paquete: pedimos
+`connectrpc ^1.0.0` (protobuf `>=3.1.0 <5.0.0`), así que la app genera con
+`protoc_plugin 22.5.0`. Si aquí se sube a `connectrpc ^2.0.0`, hay que subir el
+plugin en la app en el mismo movimiento o su `lib/gen/` deja de compilar.
 
 ## Contrato
 

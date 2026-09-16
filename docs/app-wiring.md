@@ -1,11 +1,11 @@
 # Orden de wiring Flutter (B2C)
 
 Guía corta para conectar la app con los servicios Connect ya desplegados.
-Los stubs Dart se generan **en cada repo de servicio** (`buf generate --template buf.gen.dart.yaml`), no en este paquete.
+Los stubs Dart los genera la **app** (`app-laperla/tool/proto.sh`) desde los `.proto` de cada servicio; este paquete no genera nada.
 
 ## Repos de backend (hoy)
 
-Org GitHub: `La-Perla-App`. Stubs: `<repo>/gen/dart/` tras `buf generate --template buf.gen.dart.yaml`.
+Org GitHub: `La-Perla-App`. Stubs: `app-laperla/lib/gen/`, commiteados.
 
 | Repo | Superficie app (Connect) | Uso Flutter V1 |
 |---|---|---|
@@ -63,6 +63,6 @@ final benefits = BenefitServiceClient(transport);
 - Home teaser: `best_discount_label` es `"20%"` / `"$5"` / `"Gratis"` — no hay rating/distance en directory.
 - Savings: preferí `passes.GetSavingsSummary` si la UI muestra payback; `redemption.GetMySavingsSummary` solo suma.
 - Arte 3D del pase: `image_key` + `image_effect` ya vienen en producto / digital card; shader Flutter = doc en `passes-backend-laperla/docs/pass-art-effects-flutter.md` (después del wiring plano).
-- Generar stubs: en cada servicio, `buf generate --template buf.gen.dart.yaml` → `gen/dart/`.
+- Generar stubs: `app-laperla/tool/proto.sh` → `lib/gen/` (ver [consume-services.md](consume-services.md)).
 
 Ver también [consume-services.md](consume-services.md).
